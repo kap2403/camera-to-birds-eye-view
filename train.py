@@ -22,6 +22,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import random_split
 from torch.utils.data import DataLoader
+import argparse
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -34,8 +36,17 @@ train_transforms = transforms.Compose([
   #transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
 ])
 
-front_image = r"F:\project\cam2bev-data-master\cam2bev-data-master\2_F\val\front"
-bev_occulsion = r"F:\project\cam2bev-data-master\cam2bev-data-master\2_F\val\bev+occlusion"
+import argparse
+ 
+parser = argparse.ArgumentParser(description ='Search some files')
+ 
+parser.add_argument('front_images' , help = 'front_images_path')
+parser.add_argument('bev_occulsion' , help = 'bev_occulsion_path')
+args = parser.parse_args()
+
+
+front_image = args.front_images
+bev_occulsion = args.bev_occulsion
 dataset=CustomImageDataset(front_image,bev_occulsion,transform = train_transforms)
 
 train_set , validation_set , test_Set = torch.utils.data.random_split(dataset, [72,1000,2100])
